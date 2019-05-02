@@ -8,7 +8,7 @@ module.exports = ({ required, fetchUser }) => {
       let userId
       try {
         let response = await axios({
-          url: 'http://api-gateway:3001/user/auth',
+          url: 'http://api-gateway:3001/api/user/auth',
           method: 'get',
           headers: { 'x-access-token': token },
           responseType: 'json'
@@ -18,14 +18,11 @@ module.exports = ({ required, fetchUser }) => {
         if (err.response.status === 401 && required) return res.sendStatus(401) // Invalid token and it's required
         else if (err.response.status === 401 && !required) next() // Invalid token but not required, so move on
       }
-
-      console.log(userId)
-
       // Check if fetchUser is true
       if (fetchUser) {
         try {
           let response = await axios({
-            url: `http://api-gateway:3001/user/${userId}`,
+            url: `http://api-gateway:3001/api/user/${userId}`,
             method: 'get',
             responseType: 'json'
           })
